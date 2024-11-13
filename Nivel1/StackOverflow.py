@@ -21,3 +21,4 @@ for pregunta in lista_de_preguntas:
   print(descripcion_pregunta)
 
   print()
+  print()
