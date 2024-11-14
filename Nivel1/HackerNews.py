@@ -12,13 +12,14 @@ respuesta = requests.get(url, headers=headers)
 #para obtener el texto en crudo del HTML
 soup = BeautifulSoup(respuesta.text, 'lxml')
 
-lista_noticias = soup.find_all('tr', class_='athing submission')
+lista_noticias = soup.find_all('tr', class_='athing')
 
 for noticia in lista_noticias:
   titulo = noticia.find('span', class_='titleline').text
 
   url = noticia.find('span', class_='titleline').find('a').get('href')
 
+  #recorrer el arbol de otra manera(para buscar como hermanos)
   metadata = noticia.find_next_sibling()
 
   score = 0
@@ -26,7 +27,7 @@ for noticia in lista_noticias:
 
   try:
     score_tmp = metadata.find('span', class_='score').text
-    score_tmp = score_tmp.replace('points', '').trip()
+    score_tmp = score_tmp.replace('points', '').strip()
     score = int(score_tmp)
   except:
     print('No hay score')
@@ -35,7 +36,7 @@ for noticia in lista_noticias:
     #attrs es para buscar por atributos
     comentarios_tmp = metadata.find('span', attrs = {'class' : 'subline'}).text
     comentarios_tmp = comentarios_tmp.split('|')[-1]
-    comentarios_tmp = comentarios_tmp.replace('comments', '').trip()
+    comentarios_tmp = comentarios_tmp.replace('comments', '').strip()
     comentarios = int(comentarios_tmp)
   except:
     print('No hay comentarios')
