@@ -44,3 +44,4 @@ for noticia in lista_noticias:
   print(url)
   print(score)
   print(comentarios)
+  print()
