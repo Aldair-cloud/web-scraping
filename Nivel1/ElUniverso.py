@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 class Noticia(Item):
 
   titular = Field()
-  despcripcion = Field()
+  descripcion = Field()
 
 class ElUniversoSpider(Spider):
   name = 'MiSegundoSpider'
@@ -20,7 +20,32 @@ class ElUniversoSpider(Spider):
 
   def parse(self, response):
     sel = Selector(response)
-    noticias = sel.xpath('//div[contains(@class="content-feed")]/ul/li')
+    noticias = sel.xpath('//div[contains(@class, "content-feed")]/ul/li')
+    for i, elem in enumerate(noticias): # PARA INVESTIGAR: Para que sirve enumerate?
+        item = ItemLoader(Noticia(), elem) # Cargo mi item
 
-    for noticia in noticias:
-      pass
+        # Llenando mi item a traves de expresiones XPATH
+        item.add_xpath('titular', './/h2/a/text()')
+        item.add_xpath('descripcion', './/p/text()')
+        item.add_value('id', i)
+        yield item.load_item() # Retorno mi item lleno
+  
+  # METODO #2: UTILIZANDO BEAUTIFUL SOUP => En este caso aumenta un poco la complejidad
+
+        # soup = BeautifulSoup(response.body) # EN GOOGLE COLAB: Cambiar a --> response.text
+        # contenedor_noticias=soup.find_all(class_="feed | divide-y relative")
+        # id = 0
+        # for contenedor in contenedor_noticias:
+        #   noticias = contenedor.find_all(class_='relative', recursive = False)
+        #   for noticia in noticias:
+        #     item = ItemLoader(Noticia(), response.body)
+        #     titular = noticia.find('h2').text.replace('\n', '').replace('\r', '')
+        #     descripcion = noticia.find('p')
+        #     if (descripcion):
+        #       item.add_value('descripcion', descripcion.text.replace('\n', '').replace('\r', ''))
+        #     else:
+        #       item.add_value('descripcion', 'N/A')
+        #     item.add_value('titular', titular)
+        #     item.add_value('id', id)
+        #     id += 1
+        #     yield item.load_item()
