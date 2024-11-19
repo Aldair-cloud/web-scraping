@@ -49,3 +49,13 @@ class ElUniversoSpider(Spider):
         #     item.add_value('id', id)
         #     id += 1
         #     yield item.load_item()
+# EJECUCION
+# scrapy runspider 5_eluniverso.py -o resultados.csv
+
+# CORRIENDO SCRAPY SIN LA TERMINAL
+# process = CrawlerProcess({
+#     'FEED_FORMAT': 'json',
+#     'FEED_URI': 'datos_de_salida.json'
+# })
+# process.crawl(ElUniversoSpider)
+# process.start()
