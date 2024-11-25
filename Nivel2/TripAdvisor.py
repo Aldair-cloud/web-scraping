@@ -47,7 +47,7 @@ class TripAdvisor(CrawlSpider):
                         MapCompose(self.quitarDolar)) # Debido a que ahora estamos obteniendo el score, no es necesario este post-procesamiento
     # Es posible utilizar Map Compose con funciones anonimas
     # PARA INVESTIGAR: Que son las funciones anonimas (lambda) en Python?
-    item.add_xpath('descripcion', '//div[@id="ABOUT_TAB"]//div[@class="fIrGe _T"]//text()', # //text() nos permite obtener el texto de todos los hijos
+    item.add_xpath('descripcion', '//div[@class="fIrGe _T"]//text()', # //text() nos permite obtener el texto de todos los hijos
                        MapCompose(lambda i: i.replace('\n', '').replace('\r', '')))
     item.add_xpath('amenities',
                        '//div[contains(@data-test-target, "amenity_text")]/text()')
